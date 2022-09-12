@@ -1,0 +1,203 @@
+Script started on Thu 30 Sep 2021 10:54:41 PM MST
+[01;34m#=======================================================================#
+[1;36m                  Embry Riddle Aeronautical University         
+[01;34m#=======================================================================#
+[01;37m  HOSTNAME =[1;36m prclab1.erau.edu  
+[01;37m  LOCATION =[01;32m Prescott                      
+[01;37m  USER     =[01;35m hartz2                      
+[01;37m  UPTIME   =[01;33m 173 days, 17 hours, 45, 6 users minutes  
+[01;37m  IP       = [2;36m172.19.241.11  
+[01;37m  OS       = [01;31mOracle Linux Server release 7.8  
+[01;37m  ARCH     = x86_64                     
+[01;37m  KERNEL   = 4.14.35-2025.405.3.el7uek.x86_64                   
+[01;37m  UPTRACK  = 4.14.35-2047.503.1.el7uek.x86_64                   
+[01;37m  Date     = Thu Sep 30 22:54:41 MST 2021                   
+[01;34m  CPUCORES = 6 [01;34m                                    CPU_AVG  = 0%
+[021;32m  MEMORY (total) = 7686 Mb     [01;32m                      MEM_AVG  = 12%
+[021;32m  SWAP (total)   = 4091 Mb [01;32m                     SWAP_AVG = 8%  
+[01;37m  LOAD AVERAGE  = [01;35m0.07, 0.02, 0.00                      
+[01;34m#=======================================================================#[0m
+
+             [01;31mUNAUTHORIZED ACCESS TO THIS SYSTEM IS PROHIBITED.
+[01;37mAccess to this system is restricted to authorized users only. Unauthorized
+[01;37maccess, use, or modification of this system, or any data stored therein is
+[01;37mstrictly prohibited by University policies and applicable law.
+
+ [01;31m** [01;33mIf you are not authorized to access this system, exit immediately! [01;31m**
+
+[01;37mUsers of this system expressly consent to activity monitoring. Unauthorized
+[01;37musers may be subject to administrative, criminal, or other legal action.
+
+]0;hartz2@prclab1:~/CS315/homework[?1034h[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m gcc [K[K[K[Kcat homework1.c
+// Name: Zachary Hart
+// Course: CS315
+// Assignment: homework1
+// Creates and operates an ordered linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct listItem {
+  int n;
+  struct listItem *next;
+} listItem;
+
+listItem *start = NULL;
+listItem *temp;
+listItem *pptr;
+listItem *nptr;
+
+void addItem() {
+  if (start == NULL) {
+    temp = malloc(sizeof(listItem));
+    printf("Enter a number: ");
+    scanf("%d", &temp->n);
+    temp->next = NULL;
+    start = temp;
+  } else {
+    temp->next = malloc(sizeof(listItem));
+    temp = temp->next;
+    temp->next = NULL;
+    printf("Enter a number: ");
+    scanf("%d", &(temp->n));
+  }
+}
+
+void printList() {
+  printf("OK, heres your list in numeric order: ");
+  while (pptr != NULL) {
+    if (pptr->n != 0) printf("%d", pptr->n);
+    if (pptr->next != NULL && pptr->n != 0) {
+      printf(" -> ");
+    }
+    pptr = pptr->next;
+  }
+  printf("\n");
+  pptr = start;
+}
+
+int checkNum(int x) {
+  listItem *cptr = start;
+  int numCheck = 0;  // 0 is for false
+  while (cptr != NULL) {
+    if (cptr->n == x) {
+      numCheck = 1;  // 1 is for true
+    }
+    cptr = cptr->next;
+  }
+  return numCheck;
+}
+
+int deleteItem() {
+  listItem *dptr = NULL;
+  listItem *rm = NULL;
+  int numCheck = 0;
+  dptr = start;
+  printf("What number do you want to delete?  ");
+  int x;
+  scanf("%d", &x);
+  numCheck = checkNum(x);
+  if (dptr->next != NULL && numCheck == 1) {
+    if (x == start->n) {
+      temp = start;
+      start = start->next;
+      free(temp);
+      pptr = start;
+    } else {
+      while (dptr->next->n != x) {
+        dptr = dptr->next;
+      }
+      rm = dptr->next;
+      dptr->next = dptr->next->next;
+      free(rm);
+    }
+  } else {
+    if (x != 0) {
+      printf("Can't delete, ");
+      printf("%d", x);
+      printf(" is not in the list\n");
+    }
+  }
+  return x;
+}
+
+void orderList() {
+  listItem *i;
+  listItem *j;
+  int num;
+
+  for (i = start; i->next != NULL; i = i->next) {
+    for (j = i->next; j != NULL; j = j->next) {
+      if (i->n > j->n) {
+        num = i->n;
+        i->n = j->n;
+        j->n = num;
+      }
+    }
+  }
+}
+
+int main() {
+  int x;
+  temp = malloc(sizeof(listItem));
+  temp->next = NULL;
+  temp->n = -1;  // initialize temp. Will be overwritten with addItem();
+  while (temp->n != 0) {
+    addItem();
+  }
+  nptr = start;
+  if (nptr->n == 0) {
+    printf("Your list is empty\n");
+  } else {
+    orderList();
+    pptr = start;
+    printList();
+
+    x = deleteItem();
+    printList();
+    while (x != 0) {
+      x = deleteItem();
+      printList();
+    }
+    printf("Bye\n");
+  }
+  return 0;
+}
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m gcc homework1.c
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m a.out
+Enter a number: 0
+Your list is empty
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m a.out
+Enter a number: 1
+Enter a number: 0
+OK, heres your list in numeric order: 1
+What number do you want to delete?  0
+OK, heres your list in numeric order: 1
+Bye
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m a.out
+Enter a number: 23
+Enter a number: -2
+Enter a number: 5
+Enter a number: 37
+Enter a number: 22
+Enter a number: 0
+OK, heres your list in numeric order: -2 -> 5 -> 22 -> 23 -> 37
+What number do you want to delete?  23
+OK, heres your list in numeric order: -2 -> 5 -> 22 -> 37
+What number do you want to delete?  18
+Can't delete, 18 is not in the list
+OK, heres your list in numeric order: -2 -> 5 -> 22 -> 37
+What number do you want to delete?  -2
+OK, heres your list in numeric order: 5 -> 22 -> 37
+What number do you want to delete?  37
+OK, heres your list in numeric order: 5 -> 22
+What number do you want to delete?  -6
+Can't delete, -6 is not in the list
+OK, heres your list in numeric order: 5 -> 22
+What number do you want to delete?  0
+OK, heres your list in numeric order: 5 -> 22
+Bye
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m exit
+exit
+
+Script done on Thu 30 Sep 2021 10:56:24 PM MST

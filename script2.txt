@@ -1,0 +1,136 @@
+Script started on Sat 02 Oct 2021 10:44:26 PM MST
+[01;34m#=======================================================================#
+[1;36m                  Embry Riddle Aeronautical University         
+[01;34m#=======================================================================#
+[01;37m  HOSTNAME =[1;36m prclab1.erau.edu  
+[01;37m  LOCATION =[01;32m Prescott                      
+[01;37m  USER     =[01;35m hartz2                      
+[01;37m  UPTIME   =[01;33m 175 days, 17 hours, 35, 9 users minutes  
+[01;37m  IP       = [2;36m172.19.241.11  
+[01;37m  OS       = [01;31mOracle Linux Server release 7.8  
+[01;37m  ARCH     = x86_64                     
+[01;37m  KERNEL   = 4.14.35-2025.405.3.el7uek.x86_64                   
+[01;37m  UPTRACK  = 4.14.35-2047.503.1.el7uek.x86_64                   
+[01;37m  Date     = Sat Oct  2 22:44:26 MST 2021                   
+[01;34m  CPUCORES = 6 [01;34m                                    CPU_AVG  = 0%
+[021;32m  MEMORY (total) = 7686 Mb     [01;32m                      MEM_AVG  = 14%
+[021;32m  SWAP (total)   = 4091 Mb [01;32m                     SWAP_AVG = 8%  
+[01;37m  LOAD AVERAGE  = [01;35m0.13, 0.26, 0.12                      
+[01;34m#=======================================================================#[0m
+
+             [01;31mUNAUTHORIZED ACCESS TO THIS SYSTEM IS PROHIBITED.
+[01;37mAccess to this system is restricted to authorized users only. Unauthorized
+[01;37maccess, use, or modification of this system, or any data stored therein is
+[01;37mstrictly prohibited by University policies and applicable law.
+
+ [01;31m** [01;33mIf you are not authorized to access this system, exit immediately! [01;31m**
+
+[01;37mUsers of this system expressly consent to activity monitoring. Unauthorized
+[01;37musers may be subject to administrative, criminal, or other legal action.
+
+]0;hartz2@prclab1:~/CS315/homework[?1034h[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m cat homework2.c
+// Name: Zachary Hart
+// Course: CS315
+// Assignment: homework2
+// Queues and dequeues from a circular queue
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct listNode {
+  char c;
+  struct listNode *next;
+} listNode;
+
+listNode *front = NULL;
+listNode *newNode = NULL;
+// Note that the trail is unnecessary, as it is simply equal to start->next from
+// the previous call of queue
+
+void queue(char m_letter) {
+  if (newNode == NULL) {
+    newNode = malloc(sizeof(listNode));
+    newNode->next = newNode;
+    newNode->c = m_letter;
+    front = newNode;
+  } else {
+    newNode->next = malloc(sizeof(listNode));
+    newNode->next->next = front;
+    newNode = newNode->next;
+    newNode->c = m_letter;
+  }
+}
+
+void dequeue() {
+  listNode *delPtr = NULL;
+  if (newNode == NULL) {
+    // do nothing
+    printf("Nothing to remove; the queue is empty. \n");
+  } else if (front->next == front) {
+    delPtr = front;
+    front = NULL;
+    newNode = NULL;
+    printf("The character removed was a(n) %c \n", delPtr->c);
+    free(delPtr);
+  } else {
+    delPtr = front;
+    front = front->next;
+    printf("The character removed was a(n) %c \n", delPtr->c);
+    free(delPtr);
+  }
+}
+
+int main() {
+  char c;
+  char letter;
+  char gobbledygook;
+  while (c != 'q' && c != 'Q') {
+    printf("Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: ");
+    scanf("%c", &c);
+    scanf("%c", &gobbledygook);
+    if (c == 'i' || c == 'I') {
+      printf("Enter a letter to queue: ");
+      scanf("%c", &letter);
+      scanf("%c", &gobbledygook);
+      letter = toupper(letter);
+      queue(letter);
+    }
+    if (c == 'r' || c == 'R') {
+      dequeue();
+    }
+  }
+  return 0;
+}
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m gcc homework2.c
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m a.out
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: r
+Nothing to remove; the queue is empty. 
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: i
+Enter a letter to queue: a
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: r
+The character removed was a(n) A 
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: r
+Nothing to remove; the queue is empty. 
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: i
+Enter a letter to queue: b
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: i
+Enter a letter to queue: f
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: r
+The character removed was a(n) B 
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: i
+Enter a letter to queue: c
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: i
+Enter a letter to queue: d
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: r
+The character removed was a(n) F 
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: r
+The character removed was a(n) C 
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: r
+The character removed was a(n) D 
+Enter 'i' to queue, 'r' to dequeue, or 'q' to quit: q
+]0;hartz2@prclab1:~/CS315/homework[[01;35mhartz2[m[01;33m@[m[01;36mprclab1[m:[01;33m~/CS315/homework[m][31m$[m exit
+exit
+
+Script done on Sat 02 Oct 2021 10:45:34 PM MST
